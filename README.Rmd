@@ -69,10 +69,10 @@ altered_df <- df  %>%
 
 ```{r chicken weights, echo=TRUE}
 ## Null Hypothesis
-#H0: The chicks' weight is not dependent on the type of feed.
+# H0: The chick weights are not dependent on the type of feed.
 
 ## Alternative hypothesis
-# H1: The chicks' weight is dependent on the type of feed.
+# H1: The chick weights are dependent on the type of feed.
 
 # Import data
 library(readr)
