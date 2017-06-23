@@ -28,6 +28,7 @@ anscombe
 with(anscombe, plot(x1, y1))
 abline(lm(y1 ~ x1, data = anscombe))
 ```
+
 ## Assignment 4
 
 ```{r data_import, echo=TRUE}
@@ -69,16 +70,16 @@ altered_df <- df  %>%
 
 ```{r chicken weights, echo=TRUE}
 ## Null Hypothesis
-#H0: The chicks' weight is not dependent on the type of feed.
+# H0: The chick weights are not dependent on the type of feed.
 
 ## Alternative hypothesis
-# H1: The chicks' weight is dependent on the type of feed.
+# H1: The chick weights are dependent on the type of feed.
 
 # Import data
 library(readr)
 chicken <- read_csv("chick-weights.csv")
 
-# Tidy data from long to wide format
+# Plot data: boxplot 
 boxplot(weight~feed, data=chicken)
 
 # Statistical test: One-way ANOVA
@@ -91,8 +92,8 @@ summary(chicktest)
 # Degree of freedom
 Df= 5
 
-# p-value
-p< 0.05
+## p-value
+#p< 0.05
 
 ## Outcome of analysis
 # The null hypothesis is rejected therefore the chick weights are dependent on the chick feed. 
@@ -129,8 +130,8 @@ z
 # Degree of freedom
 Df= 2
 
-# p-value
-p< 0.05
+## p-value
+# p< 0.05
 
 ## Outcome of analysis
 # The null hypothesis is rejected therefore consuming contaminated water cause gastroenteritis.
@@ -151,7 +152,7 @@ Nausea <- read_csv("nausea.csv")
 
 # Tidy data: the numeric rating scale is anchored at 0 (no nausea) to 6 (severe nausea and vomiting) for the rate of nausea intensity. Therefore remove row 9 (patient 8).
 
-# Plot
+# Plot data: Line graph
 plot(Nausea$Nausea_before ~ Nausea$Patient, type = "l", ylim = c(0, 6), xlab = "Patient", ylab = "Nausea_score", main = " Intensity of their nausea before and after receiving a 5HT3-receptor blocker", col = "blue", lwd = 2) 
 lines(Nausea$Nausea_after ~ Nausea$Patient, col = "red", lwd = 2)
 legend("top", c("Nausea_before","Nausea_after"), fill = c("blue", "red"))
@@ -162,8 +163,8 @@ wilcox.test(Nausea$Nausea_before,Nausea$Nausea_after, paired = TRUE)
 ## Test statistic
 # The test analyses two variables that are paired and non-parametric in one population group in order to determine the association between them.
 
-# p-value
-p=0.05
+## p-value
+# p=0.05
 
 ## Outcome of analysis
 # The null hypothesis is rejected therefore 5HT3-receptor blocker reduces nausea.
@@ -194,7 +195,6 @@ plot(Interest,House_price, xlab = "interest_rate", ylab = "median_house_price_US
 abline (lm(Houses$median_house_price_USD ~ Houses$interest_rate, data = Houses), col="red", lwd=2)
 
 # Statistical test:Pearson Linear Regression
-
 # Linear regression
 House1 <- lm(Houses$median_house_price_USD ~ Houses$interest_rate, data = Houses)
 summary(House1)
@@ -217,8 +217,8 @@ glm(Houses$median_house_price_USD ~ Houses$interest_rate, data = Houses)
 # Degree of freedom
 Df= 15
 
-# p-value
-p< 0.02
+## p-value
+# p< 0.02
 
 ## Outcome of analysis
 # The null hypothesis is rejected therefore housing prices are dependent on the interest rate.

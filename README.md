@@ -5,6 +5,7 @@ I love Octocat. She's the coolest cat in town.
 
 ![error
 404](https://dl.dropboxusercontent.com/u/11805474/painblogr/biostats/assignments/octocat.png)
+\`\` \#\# Assignment 2
 
     data("anscombe")
     dim.data.frame(anscombe)
@@ -52,6 +53,9 @@ I love Octocat. She's the coolest cat in town.
     ##  3rd Qu.: 8.570   3rd Qu.:8.950   3rd Qu.: 7.98   3rd Qu.: 8.190  
     ##  Max.   :10.840   Max.   :9.260   Max.   :12.74   Max.   :12.500
 
+Assignment 3
+------------
+
     ##    x1 x2 x3 x4    y1   y2    y3    y4
     ## 1  10 10 10  8  8.04 9.14  7.46  6.58
     ## 2   8  8  8  8  6.95 8.14  6.77  5.76
@@ -66,6 +70,9 @@ I love Octocat. She's the coolest cat in town.
     ## 11  5  5  5  8  5.68 4.74  5.73  6.89
 
 <img src="./figures/xy_plot-1.svg" style="display: block; margin: auto;" />
+
+Assignment 4
+------------
 
     library(readr)
     df <- read_csv("analgesic.csv")
@@ -165,3 +172,269 @@ I love Octocat. She's the coolest cat in town.
     ## 1 Measurement_1 20.125
     ## 2 Measurement_2 20.700
     ## 3 Measurement_3 20.525
+
+Assignment 5
+------------
+
+Chicken Weights
+---------------
+
+    ## Null Hypothesis
+    # H0: The chick weights are not dependent on the type of feed.
+
+    ## Alternative hypothesis
+    # H1: The chick weights are dependent on the type of feed.
+
+    # Import data
+    library(readr)
+    chicken <- read_csv("chick-weights.csv")
+
+    ## Parsed with column specification:
+    ## cols(
+    ##   weight = col_integer(),
+    ##   feed = col_character()
+    ## )
+
+    # Plot data: boxplot 
+    boxplot(weight~feed, data=chicken)
+
+![](README_files/figure-markdown_strict/chicken%20weights-1.png)
+
+    # Statistical test: One-way ANOVA
+    chicktest <- aov(weight~feed, data = chicken)
+    summary(chicktest)
+
+    ##             Df Sum Sq Mean Sq F value   Pr(>F)    
+    ## feed         5 231129   46226   15.37 5.94e-10 ***
+    ## Residuals   65 195556    3009                     
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+    ## Test statistic
+    # The grouping factor has more than three levels.
+
+    # Degree of freedom
+    Df= 5
+
+    ## p-value
+    #p< 0.05
+
+    ## Outcome of analysis
+    # The null hypothesis is rejected therefore the chick weights are dependent on the chick feed. 
+
+The Hot Zone
+------------
+
+    ## Null Hypothesis
+    # H0: The contaminated water does not cause gastroenteritis.
+
+    ## Alternative hypothesis
+    # H1: The contaminated water causes gastroenteritis.
+
+    # Import data
+    library(knitr)
+    GIT <- read_csv("gastroenteritis.csv")
+
+    ## Parsed with column specification:
+    ## cols(
+    ##   Consumption = col_character(),
+    ##   Outcome = col_character()
+    ## )
+
+    # Tidy data using scatterplot
+    Graph1 <- xtabs(~Consumption + Outcome, data = GIT)
+    Graph1
+
+    ##                     Outcome
+    ## Consumption          ill not ill
+    ##   < 1 glasses/day     39     121
+    ##   > 4 glasses/day    265     146
+    ##   1 to 4 glasses/day 265     258
+
+    # Plot barplot
+    barplot(Graph1, beside = TRUE, ylab = 'Consumption', xlab = 'Outcome' , main = 'Gastroenteritis', col= c('red','grey','black'))
+    legend('top', c('<1 glasses/day', '1 to 4 glasses/day', '>4 glasses/day'), fill = c('red','grey',' black'))
+
+![](README_files/figure-markdown_strict/the%20hot%20zone-1.png)
+
+    # Statistical test:Chi-square test
+    z <- chisq.test(Graph1, correct = TRUE)
+    z
+
+    ## 
+    ##  Pearson's Chi-squared test
+    ## 
+    ## data:  Graph1
+    ## X-squared = 74.925, df = 2, p-value < 2.2e-16
+
+    ## Test statistic
+    # Analyse 2 categorical data.
+    # To determine whether there is an association between two variables.
+
+    # Degree of freedom
+    Df= 2
+
+    ## p-value
+    # p< 0.05
+
+    ## Outcome of analysis
+    # The null hypothesis is rejected therefore consuming contaminated water cause gastroenteritis.
+
+Nausea
+------
+
+    ## Null Hypothesis
+    # H0: The 5HT3-receptor blocker treatment does not reduce nausea.
+
+    ## Alternative hypothesis
+    # H1: The 5HT3-receptor blocker treatment does reduce nausea.
+
+    # Import data
+    library(readr)
+    Nausea <- read_csv("nausea.csv")
+
+    ## Parsed with column specification:
+    ## cols(
+    ##   Patient = col_integer(),
+    ##   Nausea_before = col_integer(),
+    ##   Nausea_after = col_integer()
+    ## )
+
+    # Tidy data: the numeric rating scale is anchored at 0 (no nausea) to 6 (severe nausea and vomiting) for the rate of nausea intensity. Therefore remove row 9 (patient 8).
+
+    # Plot data: Line graph
+    plot(Nausea$Nausea_before ~ Nausea$Patient, type = "l", ylim = c(0, 6), xlab = "Patient", ylab = "Nausea_score", main = " Intensity of their nausea before and after receiving a 5HT3-receptor blocker", col = "blue", lwd = 2) 
+    lines(Nausea$Nausea_after ~ Nausea$Patient, col = "red", lwd = 2)
+    legend("top", c("Nausea_before","Nausea_after"), fill = c("blue", "red"))
+
+![](README_files/figure-markdown_strict/Nausea-1.png)
+
+    # Statistical test
+    wilcox.test(Nausea$Nausea_before,Nausea$Nausea_after, paired = TRUE)
+
+    ## Warning in wilcox.test.default(Nausea$Nausea_before, Nausea$Nausea_after, :
+    ## cannot compute exact p-value with ties
+
+    ## 
+    ##  Wilcoxon signed rank test with continuity correction
+    ## 
+    ## data:  Nausea$Nausea_before and Nausea$Nausea_after
+    ## V = 26, p-value = 0.04983
+    ## alternative hypothesis: true location shift is not equal to 0
+
+    ## Test statistic
+    # The test analyses two variables that are paired and non-parametric in one population group in order to determine the association between them.
+
+    ## p-value
+    # p=0.05
+
+    ## Outcome of analysis
+    # The null hypothesis is rejected therefore 5HT3-receptor blocker reduces nausea.
+
+Assignment 6
+------------
+
+Housing prices
+--------------
+
+    ## Null Hypothesis
+    # H0: The housing prices do not depend on the interest rates.
+
+    ## Alternative hypothesis
+    # H1: The housing prices do depend on the interest rates.
+
+    # Import data
+    library(readr)
+    Houses <- read_csv("housing-prices.csv")
+
+    ## Parsed with column specification:
+    ## cols(
+    ##   interest_rate = col_integer(),
+    ##   median_house_price_USD = col_integer()
+    ## )
+
+    # Tidy data
+    Interest = Houses$interest_rate
+    House_price= Houses$median_house_price_USD
+    head(cbind(Interest,House_price))
+
+    ##      Interest House_price
+    ## [1,]       10      183800
+    ## [2,]       10      183200
+    ## [3,]       10      174900
+    ## [4,]        9      173500
+    ## [5,]        8      172900
+    ## [6,]        7      173200
+
+    # Plot
+    plot(Interest,House_price, xlab = "interest_rate", ylab = "median_house_price_USD")
+    abline (lm(Houses$median_house_price_USD ~ Houses$interest_rate, data = Houses), col="red", lwd=2)
+
+![](README_files/figure-markdown_strict/Housing%20prices-1.png)
+
+    # Statistical test:Pearson Linear Regression
+    # Linear regression
+    House1 <- lm(Houses$median_house_price_USD ~ Houses$interest_rate, data = Houses)
+    summary(House1)
+
+    ## 
+    ## Call:
+    ## lm(formula = Houses$median_house_price_USD ~ Houses$interest_rate, 
+    ##     data = Houses)
+    ## 
+    ## Residuals:
+    ##    Min     1Q Median     3Q    Max 
+    ## -55865 -31631 -16406  27212  80735 
+    ## 
+    ## Coefficients:
+    ##                      Estimate Std. Error t value Pr(>|t|)    
+    ## (Intercept)            399229      74427   5.364 9.99e-05 ***
+    ## Houses$interest_rate   -24309       9205  -2.641   0.0194 *  
+    ## ---
+    ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+    ## 
+    ## Residual standard error: 43180 on 14 degrees of freedom
+    ##   (1 observation deleted due to missingness)
+    ## Multiple R-squared:  0.3325, Adjusted R-squared:  0.2848 
+    ## F-statistic: 6.974 on 1 and 14 DF,  p-value: 0.01937
+
+    # Diagnostic test 1:Homoskedasticity
+    plot(x=House1$fitted.values, y=House1$residuals, main = "Homoskedasticity", col="green", lwd=2)
+    abline(h=0, col="red", lwd=2)
+
+![](README_files/figure-markdown_strict/Housing%20prices-2.png)
+
+    # Diagnostic test 2: QQ plot
+    qqnorm(House1$residuals)
+    qqline(House1$residuals)
+
+![](README_files/figure-markdown_strict/Housing%20prices-3.png)
+
+    # Binary outcome variable
+    glm(Houses$median_house_price_USD ~ Houses$interest_rate, data = Houses)
+
+    ## 
+    ## Call:  glm(formula = Houses$median_house_price_USD ~ Houses$interest_rate, 
+    ##     data = Houses)
+    ## 
+    ## Coefficients:
+    ##          (Intercept)  Houses$interest_rate  
+    ##               399229                -24309  
+    ## 
+    ## Degrees of Freedom: 15 Total (i.e. Null);  14 Residual
+    ##   (1 observation deleted due to missingness)
+    ## Null Deviance:       3.91e+10 
+    ## Residual Deviance: 2.61e+10  AIC: 390.8
+
+    ## Test statistic
+    # I plotted a scatter plot to check for linear relationship and outliers.
+    # The linear diagnostic tests were used to detremine whether: there was a linear trend, the residuals were normally distributed and the residuals have the same variance for all fitted values of y.
+
+    # Degree of freedom
+    Df= 15
+
+    ## p-value
+    # p< 0.02
+
+    ## Outcome of analysis
+    # The null hypothesis is rejected therefore housing prices are dependent on the interest rate.
