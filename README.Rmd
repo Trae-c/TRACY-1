@@ -9,6 +9,8 @@ output: md_document
 I love Octocat. She's the coolest cat in town.
 
 ![error 404](https://dl.dropboxusercontent.com/u/11805474/painblogr/biostats/assignments/octocat.png)
+``
+## Assignment 2
 ```{r quick_look, echo=TRUE}
 data("anscombe")
 dim.data.frame(anscombe)
@@ -18,12 +20,16 @@ tail(anscombe)
 summary(anscombe)
 
 ```
+## Assignment 3
+
 ```{r xy_plot, echo=FALSE, fig.height=8, fig.width=8, fig.align='center', dev='svg', fig.path='./figures/'}
 data("anscombe")
 anscombe
 with(anscombe, plot(x1, y1))
 abline(lm(y1 ~ x1, data = anscombe))
 ```
+## Assignment 4
+
 ```{r data_import, echo=TRUE}
 
 library(readr)
@@ -56,10 +62,166 @@ altered_df <- df  %>%
   # print out final data frame 
   altered_df
 
+```
+## Assignment 5
 
-  
+## Chicken Weights
 
+```{r chicken weights, echo=TRUE}
+## Null Hypothesis
+#H0: The chicks' weight is not dependent on the type of feed.
 
+## Alternative hypothesis
+# H1: The chicks' weight is dependent on the type of feed.
+
+# Import data
+library(readr)
+chicken <- read_csv("chick-weights.csv")
+
+# Tidy data from long to wide format
+boxplot(weight~feed, data=chicken)
+
+# Statistical test: One-way ANOVA
+chicktest <- aov(weight~feed, data = chicken)
+summary(chicktest)
+
+## Test statistic
+# The grouping factor has more than three levels.
+
+# Degree of freedom
+Df= 5
+
+# p-value
+p< 0.05
+
+## Outcome of analysis
+# The null hypothesis is rejected therefore the chick weights are dependent on the chick feed. 
+```
+## The Hot Zone
+
+```{r the hot zone, echo=TRUE}
+## Null Hypothesis
+# H0: The contaminated water does not cause gastroenteritis.
+
+## Alternative hypothesis
+# H1: The contaminated water causes gastroenteritis.
+
+# Import data
+library(knitr)
+GIT <- read_csv("gastroenteritis.csv")
+
+# Tidy data using scatterplot
+Graph1 <- xtabs(~Consumption + Outcome, data = GIT)
+Graph1
+
+# Plot barplot
+barplot(Graph1, beside = TRUE, ylab = 'Consumption', xlab = 'Outcome' , main = 'Gastroenteritis', col= c('red','grey','black'))
+legend('top', c('<1 glasses/day', '1 to 4 glasses/day', '>4 glasses/day'), fill = c('red','grey',' black'))
+
+# Statistical test:Chi-square test
+z <- chisq.test(Graph1, correct = TRUE)
+z
+
+## Test statistic
+# Analyse 2 categorical data.
+# To determine whether there is an association between two variables.
+
+# Degree of freedom
+Df= 2
+
+# p-value
+p< 0.05
+
+## Outcome of analysis
+# The null hypothesis is rejected therefore consuming contaminated water cause gastroenteritis.
+
+```
+## Nausea
+
+```{r Nausea, echo= TRUE}
+## Null Hypothesis
+# H0: The 5HT3-receptor blocker treatment does not reduce nausea.
+
+## Alternative hypothesis
+# H1: The 5HT3-receptor blocker treatment does reduce nausea.
+
+# Import data
+library(readr)
+Nausea <- read_csv("nausea.csv")
+
+# Tidy data: the numeric rating scale is anchored at 0 (no nausea) to 6 (severe nausea and vomiting) for the rate of nausea intensity. Therefore remove row 9 (patient 8).
+
+# Plot
+plot(Nausea$Nausea_before ~ Nausea$Patient, type = "l", ylim = c(0, 6), xlab = "Patient", ylab = "Nausea_score", main = " Intensity of their nausea before and after receiving a 5HT3-receptor blocker", col = "blue", lwd = 2) 
+lines(Nausea$Nausea_after ~ Nausea$Patient, col = "red", lwd = 2)
+legend("top", c("Nausea_before","Nausea_after"), fill = c("blue", "red"))
+
+# Statistical test
+wilcox.test(Nausea$Nausea_before,Nausea$Nausea_after, paired = TRUE)
+
+## Test statistic
+# The test analyses two variables that are paired and non-parametric in one population group in order to determine the association between them.
+
+# p-value
+p=0.05
+
+## Outcome of analysis
+# The null hypothesis is rejected therefore 5HT3-receptor blocker reduces nausea.
+
+```
+## Assignment 6
+
+## Housing prices
+
+```{r Housing prices, echo=TRUE}
+## Null Hypothesis
+# H0: The housing prices do not depend on the interest rates.
+
+## Alternative hypothesis
+# H1: The housing prices do depend on the interest rates.
+
+# Import data
+library(readr)
+Houses <- read_csv("housing-prices.csv")
+
+# Tidy data
+Interest = Houses$interest_rate
+House_price= Houses$median_house_price_USD
+head(cbind(Interest,House_price))
+
+# Plot
+plot(Interest,House_price, xlab = "interest_rate", ylab = "median_house_price_USD")
+abline (lm(Houses$median_house_price_USD ~ Houses$interest_rate, data = Houses), col="red", lwd=2)
+
+# Statistical test:Pearson Linear Regression
+
+# Linear regression
+House1 <- lm(Houses$median_house_price_USD ~ Houses$interest_rate, data = Houses)
+summary(House1)
+
+# Diagnostic test 1:Homoskedasticity
+plot(x=House1$fitted.values, y=House1$residuals, main = "Homoskedasticity", col="green", lwd=2)
+abline(h=0, col="red", lwd=2)
+
+# Diagnostic test 2: QQ plot
+qqnorm(House1$residuals)
+qqline(House1$residuals)
+
+# Binary outcome variable
+glm(Houses$median_house_price_USD ~ Houses$interest_rate, data = Houses)
+
+## Test statistic
+# I plotted a scatter plot to check for linear relationship and outliers.
+# The linear diagnostic tests were used to detremine whether: there was a linear trend, the residuals were normally distributed and the residuals have the same variance for all fitted values of y.
+
+# Degree of freedom
+Df= 15
+
+# p-value
+p< 0.02
+
+## Outcome of analysis
+# The null hypothesis is rejected therefore housing prices are dependent on the interest rate.
 
 ```
 
