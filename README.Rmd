@@ -18,7 +18,6 @@ colnames(anscombe)
 head(anscombe)
 tail(anscombe)
 summary(anscombe)
-
 ```
 ## Assignment 3
 
@@ -35,7 +34,6 @@ abline(lm(y1 ~ x1, data = anscombe))
 
 library(readr)
 df <- read_csv("analgesic.csv")
-
 ```
 ```{r data_summary, echo=TRUE}
 dim.data.frame(df)
@@ -62,7 +60,6 @@ altered_df <- df  %>%
   ungroup()
   # print out final data frame 
   altered_df
-
 ```
 ## Assignment 5
 
@@ -135,7 +132,6 @@ Df= 2
 
 ## Outcome of analysis
 # The null hypothesis is rejected therefore consuming contaminated water cause gastroenteritis.
-
 ```
 ## Nausea
 
